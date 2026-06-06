@@ -250,7 +250,7 @@ app.post('/api/delivery/estimate',async(req,res)=>{
 
 // ─── SERVE FRONTEND ──────────────────────────────────────────────────────────
 app.get('*',(req,res)=>{
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
