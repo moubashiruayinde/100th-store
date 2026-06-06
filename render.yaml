@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: 100th-store-server
+    env: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node index.js
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CLOUDINARY_CLOUD_NAME
+        value: ddagcrv1f
+      - key: CLOUDINARY_API_KEY
+        value: "389671383124232"
+      - key: CLOUDINARY_API_SECRET
+        value: LRXsHD8J8UdSueHETcmsHMSTETE
+      - key: PAYSTACK_SECRET_KEY
+        value: sk_test_4643a35ae15383a70900905accd68d10ec74a4e7
+      - key: PAYSTACK_PUBLIC_KEY
+        value: pk_test_9383a10eec4ba6546e9f538401eebc08d40c2a72
+      - key: JWT_SECRET
+        value: 100th_super_secret_jwt_2026
+      - key: ADMIN_EMAIL
+        value: hundredsdotshop@gmail.com
+      - key: ADMIN_PASSWORD
+        value: Admin@100th2026
+      - key: DATABASE_URL
+        value: postgresql://db_100th_store_db_user:bkJSc5ZFLUsXSMxqyOTDQXHvybV3CG30@dpg-d8hhpbek1jcs73a06esg-a.oregon-postgres.render.com/db_100th_store_db
+
+  - type: web
+    name: 100th-store-frontend
+    env: static
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    plan: free
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://one00th-store.onrender.com
