@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: 100th-store
-    env: node
-    buildCommand: npm install
-    startCommand: node index.js
-    plan: free
