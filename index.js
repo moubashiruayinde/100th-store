@@ -261,6 +261,20 @@ app.post('/api/delivery/estimate',async(req,res)=>{
   res.json({fee,estimated_days:state?.toLowerCase()==='lagos'?'1-2':'2-4'});
 });
 
+// BANNERS
+app.get('/api/banners',async(req,res)=>{
+  try{ const r=await pool.query('SELECT * FROM banner_slots ORDER BY slot'); res.json(r.rows); }
+  catch(err){ res.status(500).json({error:err.message}); }
+});
+app.post('/api/banners',adminAuth,async(req,res)=>{
+  try{
+    const{slot,image_url,eye,heading,sub}=req.body;
+    await pool.query(`INSERT INTO banner_slots (slot,image_url,eye,heading,sub,updated_at) VALUES ($1,$2,$3,$4,$5,NOW()) ON CONFLICT (slot) DO UPDATE SET image_url=COALESCE($2,banner_slots.image_url),eye=COALESCE($3,banner_slots.eye),heading=COALESCE($4,banner_slots.heading),sub=COALESCE($5,banner_slots.sub),updated_at=NOW()`,
+      [slot,image_url||null,eye||null,heading||null,sub||null]);
+    res.json({success:true});
+  }catch(err){ res.status(500).json({error:err.message}); }
+});
+
 // ─── TEMP: ONE-TIME ADMIN PASSWORD RESET ─────────────────────────────────────
 // Visit /api/reset-admin once to sync DB password with your ADMIN_PASSWORD env var
 // DELETE THIS ROUTE after you've successfully logged in
@@ -287,6 +301,8 @@ app.get('/api/reset-admin', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // ─── SERVE FRONTEND ──────────────────────────────────────────────────────────
 app.get('*',(req,res)=>{
